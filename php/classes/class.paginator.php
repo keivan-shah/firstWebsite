@@ -112,8 +112,8 @@ class Paginator{
 		    $pagination .= "<ul class='pagination'>";
 		if ($this->_page > 1)
 		    $pagination.= "<li><a href='".$path."$this->_instance=$prev"."$ext'>Previous</a></li>";
-		else
-		    $pagination.= "<span class='disabled'>Previous</span>";   
+		else{}
+		   // $pagination.= "<span class='disabled'>Previous</span>";   
 		if ($lastpage < 7 + ($adjacents * 2))
 		{   
 		for ($counter = 1; $counter <= $lastpage; $counter++)
@@ -171,8 +171,8 @@ class Paginator{
 		}
 		if ($this->_page < $counter - 1)
 		    $pagination.= "<li><a href='".$path."$this->_instance=$next"."$ext'>Next</a></li>";
-		else
-		    $pagination.= "<li><span class='disabled'>Next</span></li>";
+		else{}
+		    //$pagination.= "<li><span class='disabled'>Next</span></li>";
 		    $pagination.= "</ul>\n";       
 		}
 	return $pagination;

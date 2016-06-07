@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 06, 2016 at 04:45 PM
+-- Generation Time: Jun 07, 2016 at 06:49 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.21
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `ahg`
 --
+CREATE DATABASE IF NOT EXISTS `ahg` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `ahg`;
 
 -- --------------------------------------------------------
 
@@ -28,7 +30,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `phplogin` (
   `id` int(11) NOT NULL,
-  `user` varchar(50) NOT NULL,
+  `user` varchar(65) NOT NULL,
   `pass` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
