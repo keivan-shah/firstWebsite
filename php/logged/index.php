@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<?php
+  session_start();
+  if(!isset($_SESSION["username"]))
+  {
+    header('Location: ../index.php');
+  }
+?>
 <?php require('../includes/config.php'); ?>
 <html lang="en">
   <head>
@@ -10,7 +17,7 @@
     
     <style>
     .logo{font-size: 40px;}
-    body{font-family: 'Lobster', cursive;}
+    body{font-family: sans-serif;}
     nav li{padding-right: 10px;}
     </style>
 
@@ -18,7 +25,7 @@
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/login-register.css" rel="stylesheet">
     <link rel="stylesheet" href="../style/index_style.css">
-    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='st
     <script src="../js/login-register.js" type="text/javascript"></script>
 
 
@@ -45,7 +52,7 @@
     <div class="collapse navbar-collapse" id="example">
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home</a></li>
-        <li><a href="posts.html">Posts</a></li>
+        <li><a href="post.php">Post</a></li>
         <li><a href="about.html">About Us</a></li>
          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More<span class="caret"></span></a>
@@ -82,12 +89,12 @@
         $pages = new Paginator('6','p');
         $stmt = $db->query('SELECT postID FROM list');
         $pages->set_total($stmt->rowCount());
-        $stmt = $db->query('SELECT postID, title, postdesc, date FROM list ORDER BY date DESC '.$pages->get_limit());
+        $stmt = $db->query('SELECT postID, type, title, postdesc, date FROM list ORDER BY date DESC '.$pages->get_limit());
         while($row = $stmt->fetch()){
             
             echo '<div>';
-                echo '<h1><a href="viewpost.php?id='.$row['postID'].'">'.$row['title'].'</a></h1>';
-                echo '<p>Posted on '.date('jS M Y H:i:s', strtotime($row['date'])).'</p>';
+                echo '<h1><a href="viewpost.php?id='.$row['postID'].'">'."[".$row['type']."] ".$row['title'].'</a></h1>';
+                echo '<p>Posted on '.date('jS M Y', strtotime($row['date'])).'</p>';
                 echo '<p>'.$row['postdesc'].'</p>';                
                 echo '<p><a href="viewpost.php?id='.$row['postID'].'">Read More</a></p>';                
             echo '</div>';

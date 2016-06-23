@@ -20,11 +20,7 @@ if($result[0]>0)
 	//echo "<br/><a href='signinform.php'>SignIn</a>";
 }
 else{
-
-	echo "<h1>Login Failed</h1>";
-	echo "<br/><a href='index.php'>Try Again?</a>";
-	//echo "<br/><a href='signinform.php'>SignIn</a>";
-
+	header('Location: index.php?message=loginfailed');
 
 }
 

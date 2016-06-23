@@ -1,0 +1,52 @@
+body {
+    background-image: url(http://cdn.wonderfulengineering.com/wp-content/uploads/2014/09/Best-Wallpapers-18.jpg);
+  font-family: 'Tangerine',sans-serif;
+  color:#333;
+  line-height: 25px;  
+}
+
+.form-group label{
+  font-size: 27px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Tangerine', sans-serif;
+  font-weight: 300;
+  font-size: 40;
+  color:#111;
+  margin-top:8px;
+  margin-bottom:8px;
+}
+h1, h2, h3 {
+  text-transform:uppercase;
+}
+
+input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    cursor: inherit;
+    opacity: 1;
+    filter: alpha(opacity=1);    
+}
+ textarea
+{
+  height: 400px;
+  width: 500px;
+  border: 3px solid #cccccc;
+  padding: 5px;
+  font-family: Tahoma, sans-serif;
+  background-image: url(bg.gif);
+  background-position: bottom right;
+  background-repeat: no-repeat;
+}
+.form-inline .form-group{
+    margin-left: 0;
+    margin-right: 0;
+}
+.control-label {
+    color:#333333;
+}

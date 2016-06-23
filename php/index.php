@@ -9,14 +9,13 @@
     
     <style>
     .logo{font-size: 40px;}
-    body{font-family: 'Lobster', cursive;}
+    body{font-family: sans-serif;}
     nav li{padding-right: 10px;}
     </style>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/login-register.css" rel="stylesheet">
-    <link rel="stylesheet" href="style/index_style.css">
     <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
     <script src="js/login-register.js" type="text/javascript"></script>
 
@@ -29,6 +28,7 @@
     <![endif]-->
   </head>
   <body>
+    
 <nav class="navbar navbar-default">
   <div class="container">
     <div class="navbar-header">
@@ -44,7 +44,7 @@
     <div class="collapse navbar-collapse" id="example">
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home</a></li>
-        <li><a href="posts.html">Posts</a></li>
+        <li><a data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();">Post</a></li>
         <li><a href="about.html">About Us</a></li>
          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More<span class="caret"></span></a>
@@ -74,6 +74,7 @@
     </div>
   </div>
 </nav>
+
         <div class="modal fade login" id="loginModal">
           <div class="modal-dialog login animated">
               <div class="modal-content">
@@ -123,6 +124,33 @@
               </div>
           </div>
       </div>
+      <?php
+        if(isset($_GET['message']))
+      {
+      $message=$_GET['message'];
+        if($message=="rpass")
+        {
+            echo '<div class="alert alert-warning alert-dismissible" role="alert">';
+            echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            echo '<strong>Warning!</strong>The passwords did not match!';
+            echo '</div>';
+        }
+        else if($message=="logout")
+        {
+           echo '<div class="alert alert-success alert-dismissible" role="alert">';
+            echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            echo 'Successfully Logged Out!';
+            echo '</div>';
+        }
+        else if($message=="loginfailed")
+        {
+           echo '<div class="alert alert-warning alert-dismissible" role="alert">';
+            echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            echo 'Sorry the username and password did not match! <a data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();">Try Again?</a>';
+            echo '</div>';
+        }
+    }
+    ?>
       <div class="container">
         <?php require('includes/config.php'); ?>
         <?php
@@ -131,12 +159,12 @@
         $pages = new Paginator('6','p');
         $stmt = $db->query('SELECT postID FROM list');
         $pages->set_total($stmt->rowCount());
-        $stmt = $db->query('SELECT postID, title, postdesc, date FROM list ORDER BY date DESC '.$pages->get_limit());
+        $stmt = $db->query('SELECT postID, type, title, postdesc, date FROM list ORDER BY date DESC '.$pages->get_limit());
         while($row = $stmt->fetch()){
             
             echo '<div>';
-                echo '<h1><a href="viewpost.php?id='.$row['postID'].'">'.$row['title'].'</a></h1>';
-                echo '<p>Posted on '.date('jS M Y H:i:s', strtotime($row['date'])).'</p>';
+                echo '<h1><a href="viewpost.php?id='.$row['postID'].'">'."[".$row['type']."] ".$row['title'].'</a></h1>';
+                echo '<p>Posted on '.date('jS M Y', strtotime($row['date'])).'</p>';
                 echo '<p>'.$row['postdesc'].'</p>';                
                 echo '<p><a href="viewpost.php?id='.$row['postID'].'">Read More</a></p>';                
             echo '</div>';
