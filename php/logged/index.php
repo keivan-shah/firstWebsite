@@ -24,8 +24,6 @@
     <!-- Bootstrap -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/login-register.css" rel="stylesheet">
-    <link rel="stylesheet" href="../style/index_style.css">
-    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='st
     <script src="../js/login-register.js" type="text/javascript"></script>
 
 
@@ -66,18 +64,33 @@
             <li><a href="#">Suggestions</a></li>
           </ul>
         </li>
-        <li>
-          <form action="logout.php">
-          <input class="btn btn-primary navbar-btn" type="submit" value="Log Out">
-          </form>
-        </li>
       </ul>
-      <form class="navbar-form navbar-right" role="search">
+        <ul class="nav navbar-nav navbar-right">
+        <li>
+          <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search">
         </div>
         <button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-search"></span></button>
       </form>
+        </li>
+<!--        <li>
+          <form action="logout.php" class="navbar-right">
+          <input class="btn btn-primary navbar-btn" type="submit" value="Log Out">
+          </form>
+        </li>
+ -->         <?php
+            echo '<li class="dropdown">';
+            echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>'.$_SESSION["username"].'<span class="caret"></span></b></a>';
+            echo '<ul class="dropdown-menu">';
+            echo '<li><a href="#profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                  <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="post.php"><span class="glyphicon glyphicon-pencil"></span> Write a post</a></li>';
+            echo '</ul></li>';
+          ?>
+      </ul>
+      
     </div>
   </div>
 </nav>

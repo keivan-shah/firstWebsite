@@ -6,19 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Home</title>
-    
-    <style>
-    .logo{font-size: 40px;}
-    body{font-family: sans-serif;}
-    nav li{padding-right: 10px;}
-    </style>
-
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/login-register.css" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
     <script src="js/login-register.js" type="text/javascript"></script>
-
+    <style>
+    .logo a {font-size: 60px;}
+    body{font-family: sans-serif;}
+    nav li{padding-right: 10px;}
+    </style>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -130,23 +126,38 @@
       $message=$_GET['message'];
         if($message=="rpass")
         {
-            echo '<div class="alert alert-warning alert-dismissible" role="alert">';
+            echo '<div class="alert alert-danger alert-dismissible" role="alert">';
             echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-            echo '<strong>Warning!</strong>The passwords did not match!';
+            echo '<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  The passwords did not match!</strong>';
             echo '</div>';
         }
         else if($message=="logout")
         {
-           echo '<div class="alert alert-success alert-dismissible" role="alert">';
+          echo '<div class="alert alert-success alert-dismissible" role="alert">';
             echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-            echo 'Successfully Logged Out!';
+            echo '<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+  <span class="sr-only">Success:</span>
+  Successfully Logged Out!</strong>';
             echo '</div>';
         }
         else if($message=="loginfailed")
         {
-           echo '<div class="alert alert-warning alert-dismissible" role="alert">';
+           echo '<div class="alert alert-danger alert-dismissible" role="alert">';
             echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-            echo 'Sorry the username and password did not match! <a data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();">Try Again?</a>';
+            echo '<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  Sorry the username and password did not match! <a data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();">Try Again?</a>';
+            echo '</div>';
+        }
+        else if($message=="signedup")
+        {
+           echo '<div class="alert alert-success alert-dismissible" role="alert">';
+            echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            echo '<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+  <span class="sr-only">Success:</span>
+  Successfully Signed Up!</strong>';
             echo '</div>';
         }
     }

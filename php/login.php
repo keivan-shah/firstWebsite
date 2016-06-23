@@ -15,7 +15,7 @@ if($result[0]>0)
 	echo "Successfully logged in";
 	session_start();
 	$_SESSION["username"]=$uname;
-	header('Location: logged/index.php');
+	header('Location: logged/index.php?message=logged');
 	//echo "<br/><a href='signupform.php'>Signup</a>";
 	//echo "<br/><a href='signinform.php'>SignIn</a>";
 }
