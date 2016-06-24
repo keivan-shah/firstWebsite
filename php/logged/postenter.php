@@ -1,10 +1,10 @@
 <?php
-$conn=mysql_connect("localhost","test","12345");
+$conn=mysqli_connect("localhost","test","12345");
 if(!$conn)
 {
-  die('Could not Connect:'. mysql_error());
+  die('Could not Connect:'. mysqli_error($conn));
 }
-mysql_select_db("posts",$conn);
+mysqli_select_db($conn,"posts");
 
  ?>
  <?php
@@ -15,10 +15,10 @@ mysql_select_db("posts",$conn);
   $d=date("Y-m-d");
   $sql="INSERT INTO list (`postID`, `type`, `title`, `postdesc`, `content`, `date`) VALUES ('NULL','$type', '$title', '$postdesc', '$content','$d')";
   //$sql="SELECT count(*) FROM list WHERE(title='".$title."'and content='".$content."'and postdesc='".$postdesc."')";
-  $qury=mysql_query($sql,$conn);
+  $qury=mysqli_query($conn,$sql);
   //$result=mysql_fetch_array($qury);
     if(!$qury)
-  echo "Failed!!!!!!!!!!!!" .mysql_error();
+  echo "Failed!!!!!!!!!!!!" .mysqli_error($conn);
 else
   echo "successful";
   //if( $_POST["title"] || $_POST["content"] ) {

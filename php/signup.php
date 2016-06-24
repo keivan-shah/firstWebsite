@@ -14,7 +14,7 @@ $qury=mysql_query($sql);
 	if(!$qury)
 		echo "Failed" .mysql_error();
 	else
-		echo "successful";
+		header('Location: index.php?message=signedup');
 }
 else
 {
