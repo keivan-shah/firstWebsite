@@ -94,9 +94,30 @@
     </div>
   </div>
 </nav>
-        
-        <div class="container">
-        <?php
+      <?php
+        if(isset($_GET['message']))
+      {
+      $message=$_GET['message'];
+      if($message=="logged")
+        {
+            echo '<div class="alert alert-success alert-dismissible" role="alert">';
+            echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            echo '<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+  <span class="sr-only">Success:</span>
+  Successfully Logged In!</strong>';
+            echo '</div>';
+        }
+        else if($message=="post")
+        {
+            echo '<div class="alert alert-success alert-dismissible" role="alert">';
+            echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            echo '<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+  <span class="sr-only">Success:</span>
+  Successfully Posted!</strong>';
+            echo '</div>';
+        }
+      }
+       echo '<div class="container">';
     try {
       
         $pages = new Paginator('6','p');
