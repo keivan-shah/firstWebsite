@@ -1,6 +1,10 @@
 <?php 
-$conn=mysqli_connect("localhost","root","");
-$db=mysqli_select_db($conn,"ahg");
+$conn=mysqli_connect("localhost","test","12345");
+if(!$conn)
+{
+  die('Could not Connect:'. mysqli_error($conn));
+}
+$db=mysqli_select_db($conn,"database");
 
   $uname=$_POST['name'];
   $pass=$_POST['pwd'];

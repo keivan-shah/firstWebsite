@@ -1,6 +1,10 @@
 <?php 
-$conn=mysql_connect("localhost","root","");
-$db=mysql_select_db("ahg",$conn);
+$conn=mysqli_connect("localhost","test","12345");
+if(!$conn)
+{
+  die('Could not Connect:'. mysqli_error($conn));
+}
+$db=mysqli_select_db($conn,"database");
  ?>
 <?php 
 $user=$_POST['n'];
@@ -10,9 +14,9 @@ $id=$_POST['id'];
 if($pass==$rpass)
 {
 $sql="INSERT into phplogin values(".$id.",'".$user."','".$pass."')";
-$qury=mysql_query($sql);
+$qury=mysqli_query($conn,$sql);
 	if(!$qury)
-		echo "Failed" .mysql_error();
+		echo "Failed" .mysqli_error($conn);
 	else
 		header('Location: index.php?message=signedup');
 }

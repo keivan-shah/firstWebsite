@@ -30,7 +30,7 @@ if($row['postID']==''){
 		<?php	
 echo '<div>';
     echo '<h1>'.$row['title'].'</h1>';
-    echo '<p>Posted on '.date('jS M Y', strtotime($row['date'])).'</p>';
+    echo '<p>Posted on '.date('jS M Y H:i', strtotime($row['date'])).'</p>';
     echo '<p>'.$row['content'].'</p>';                
 echo '</div>';
 

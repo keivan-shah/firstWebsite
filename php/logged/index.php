@@ -128,7 +128,7 @@
             
             echo '<div>';
                 echo '<h1><a href="viewpost.php?id='.$row['postID'].'">'."[".$row['type']."] ".$row['title'].'</a></h1>';
-                echo '<p>Posted on '.date('jS M Y', strtotime($row['date'])).'</p>';
+                echo '<p>Posted on '.date('jS M Y H:i', strtotime($row['date'])).'</p>';
                 echo '<p>'.$row['postdesc'].'</p>';                
                 echo '<p><a href="viewpost.php?id='.$row['postID'].'">Read More</a></p>';                
             echo '</div>';
