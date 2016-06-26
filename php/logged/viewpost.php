@@ -1,6 +1,6 @@
 <?php
 require('../includes/config.php'); 
-$stmt = $db->prepare('SELECT postID, title, content, date FROM list WHERE postID = :postID');
+$stmt = $db->prepare('SELECT postID, title, content, date, authorid FROM list WHERE postID = :postID');
 $stmt->execute(array(':postID' => $_GET['id']));
 $row = $stmt->fetch();
 
@@ -30,7 +30,7 @@ if($row['postID']==''){
 		<?php	
 echo '<div>';
     echo '<h1>'.$row['title'].'</h1>';
-    echo '<p>Posted on '.date('jS M Y H:i', strtotime($row['date'])).'</p>';
+    echo '<p>Posted on '.date('jS M Y H:i', strtotime($row['date'])).' by <b>'.$row['authorid'].'</b></p>';
     echo '<p>'.$row['content'].'</p>';                
 echo '</div>';
 

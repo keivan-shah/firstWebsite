@@ -14,19 +14,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Home</title>
-    
-    <style>
-    .logo{font-size: 40px;}
-    body{font-family: sans-serif;}
-    nav li{padding-right: 10px;}
-    </style>
-
     <!-- Bootstrap -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/login-register.css" rel="stylesheet">
     <script src="../js/login-register.js" type="text/javascript"></script>
-
-
+        <style>
+    .logo {font-size: 30px;}
+    body{font-family: sans-serif;}
+    nav li{padding-right: 10px;}
+    </style>
+    
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -123,12 +120,12 @@
         $pages = new Paginator('6','p');
         $stmt = $db->query('SELECT postID FROM list');
         $pages->set_total($stmt->rowCount());
-        $stmt = $db->query('SELECT postID, type, title, postdesc, date FROM list ORDER BY date DESC '.$pages->get_limit());
+        $stmt = $db->query('SELECT postID, type, title, postdesc, date, authorid FROM list ORDER BY date DESC '.$pages->get_limit());
         while($row = $stmt->fetch()){
             
             echo '<div>';
                 echo '<h1><a href="viewpost.php?id='.$row['postID'].'">'."[".$row['type']."] ".$row['title'].'</a></h1>';
-                echo '<p>Posted on '.date('jS M Y H:i', strtotime($row['date'])).'</p>';
+                echo '<p>Posted on '.date('jS M Y H:i', strtotime($row['date'])).' by <b>'.$row['authorid'].'</b></p>';
                 echo '<p>'.$row['postdesc'].'</p>';                
                 echo '<p><a href="viewpost.php?id='.$row['postID'].'">Read More</a></p>';                
             echo '</div>';

@@ -4,7 +4,7 @@ if(!$conn)
 {
   die('Could not Connect:'. mysqli_error($conn));
 }
-$db=mysqli_select_db($conn,"database");
+$db=mysqli_select_db($conn,"data");
 
   $uname=$_POST['name'];
   $pass=$_POST['pwd'];

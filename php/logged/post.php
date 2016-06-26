@@ -10,14 +10,13 @@
          <head>
           <link rel="stylesheet" href="../css/bootstrap.min.css">
            <link rel="stylesheet" href="../css/post.css">
-            <link rel="stylesheet" href="../style/index_style.css">
 
   <script src="../js/jquery.min.js"></script>
   <script src="../js/bootstrap.min.js"></script>
  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Tangerine">
           <style>
-    .logo{font-size: 40px;}
-    body{font-family: 'Lobster', cursive;}
+    .logo {font-size: 30px;}
+    body{font-family: sans-serif;}
     nav li{padding-right: 10px;}
     </style>
           </head>
@@ -70,7 +69,10 @@
             echo '<li class="dropdown">';
             echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>'.$_SESSION["username"].'<span class="caret"></span></b></a>';
             echo '<ul class="dropdown-menu">';
-            echo '<li><a href="#profile">Profile</a></li><li><a href="logout.php">Logout</a></li><li role="separator" class="divider"></li><li><a href="post.php">Write a post</a></li>';
+            echo '<li><a href="#profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                  <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li class="active"><a href="post.php"><span class="glyphicon glyphicon-pencil"></span> Write a post</a></li>';
             echo '</ul></li>';
           ?>
       </ul>

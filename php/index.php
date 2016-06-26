@@ -1,3 +1,10 @@
+<?php
+session_start();
+if(isset($_SESSION["username"]))
+{
+  header('Location: logged/index.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,7 +18,7 @@
     <link href="css/login-register.css" rel="stylesheet">
     <script src="js/login-register.js" type="text/javascript"></script>
     <style>
-    .logo a {font-size: 60px;}
+    .logo {font-size: 30px;}
     body{font-family: sans-serif;}
     nav li{padding-right: 10px;}
     </style>
@@ -97,6 +104,8 @@
                                 <form method="post" html="{:multipart=>true}" data-remote="true" action="signup.php" accept-charset="UTF-8">
                                 <input id="n" class="form-control" type="text" placeholder="Username" name="n">
                                 <input type="text" class="form-control" id="id" placeholder="Registration ID" name="id">
+                                <input type="text" class="form-control" id="emailid" placeholder="E-Mail ID" name="emailid">
+                                <input id="no" class="form-control" type="text" placeholder="Mobile Number" name="no">
                                 <input id="p" class="form-control" type="password" placeholder="Password" name="p">
                                 <input id="rp" class="form-control" type="password" placeholder="Repeat Password" name="rp">
                                 <input class="btn btn-default btn-register" type="submit" value="Create account" >
@@ -170,12 +179,12 @@
         $pages = new Paginator('6','p');
         $stmt = $db->query('SELECT postID FROM list');
         $pages->set_total($stmt->rowCount());
-        $stmt = $db->query('SELECT postID, type, title, postdesc, date FROM list ORDER BY date DESC '.$pages->get_limit());
+        $stmt = $db->query('SELECT postID, type, title, postdesc, date, authorid FROM list ORDER BY date DESC '.$pages->get_limit());
         while($row = $stmt->fetch()){
             
             echo '<div>';
                 echo '<h1><a href="viewpost.php?id='.$row['postID'].'">'."[".$row['type']."] ".$row['title'].'</a></h1>';
-                echo '<p>Posted on '.date('jS M Y H:i', strtotime($row['date'])).'</p>';
+                echo '<p>Posted on '.date('jS M Y H:i', strtotime($row['date'])).' by <b>'.$row['authorid'].'</b></p>';
                 echo '<p>'.$row['postdesc'].'</p>';                
                 echo '<p><a href="viewpost.php?id='.$row['postID'].'">Read More</a></p>';                
             echo '</div>';

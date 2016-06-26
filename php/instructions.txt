@@ -1,0 +1,3 @@
+to initially create the database!
+
+open "localhost/website/php/createdatabase.php"

@@ -1,6 +1,6 @@
 <?php
 require('includes/config.php'); 
-$stmt = $db->prepare('SELECT postID, title, content, date FROM list WHERE postID = :postID');
+$stmt = $db->prepare('SELECT postID, title, content, date, authorid FROM list WHERE postID = :postID');
 $stmt->execute(array(':postID' => $_GET['id']));
 $row = $stmt->fetch();
 
@@ -15,7 +15,7 @@ if($row['postID']==''){
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MySite - <?php echo $row['title'];?></title>
+    <title>V.J.T.I - <?php echo $row['title'];?></title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -30,7 +30,7 @@ if($row['postID']==''){
 		<?php	
 echo '<div>';
     echo '<h1>'.$row['title'].'</h1>';
-    echo '<p>Posted on '.date('jS M Y H:i', strtotime($row['date'])).'</p>';
+     echo '<p>Posted on '.date('jS M Y H:i', strtotime($row['date'])).' by <b>'.$row['authorid'].'</b></p>';
     echo '<p>'.$row['content'].'</p>';                
 echo '</div>';
 
