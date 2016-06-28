@@ -4,6 +4,24 @@ session_start();
 if (!isset($_SESSION["username"])) {
         header('Location: ../index.php');
 }
+$alerts=0;
+$conn = mysqli_connect("localhost", "test", "12345");
+if (!$conn) {
+    die('Could not Connect:' . mysqli_error($conn));
+}
+$db = mysqli_select_db($conn, 'data');
+$sql    = "SELECT postID FROM list WHERE authorid='" . $_SESSION['username']."'";
+$qury   = mysqli_query($conn, $sql);
+if($qury!=NULL && mysqli_num_rows($qury)>0)
+{
+  while($result = mysqli_fetch_assoc($qury))
+  {
+    $stmt="SELECT count(*) AS 'like' FROM likes WHERE postid=".$result['postID'];
+    $query= mysqli_query($conn, $stmt);
+    $row=mysqli_fetch_assoc($query);
+    $alerts+=$row['like'];
+  }
+}
 ?>
 <?php
 require('../includes/config.php');
@@ -82,7 +100,10 @@ echo '<li class="dropdown">';
 echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>' . $_SESSION["username"] . '<span class="caret"></span></b></a>';
 echo '<ul class="dropdown-menu">';
 echo '<li><a href="#profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-                  <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+      <li role="separator" class="divider"></li>';
+echo '<li><a href="#notification"><span class="glyphicon glyphicon-bell"></span>   Alerts   <span class="badge">'.$alerts.'</span></a></li>
+      <li role="separator" class="divider"></li>';
+ echo'            <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="post.php"><span class="glyphicon glyphicon-pencil"></span> Write a post</a></li>';
 echo '</ul></li>';
