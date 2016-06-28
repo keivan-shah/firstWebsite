@@ -1,8 +1,7 @@
 <?php
 session_start();
-if(isset($_SESSION["username"]))
-{
-  header('Location: logged/index.php');
+if (isset($_SESSION["username"])) {
+        header('Location: logged/index.php');
 }
 ?>
 <!DOCTYPE html>
@@ -88,7 +87,6 @@ if(isset($_SESSION["username"]))
                     <div class="modal-body">  
                         <div class="box">
                              <div class="content">
-                                
                                 <div class="form loginBox">
                                     <form method="post" action="login.php" accept-charset="UTF-8">
                                     <input id="name" class="form-control" type="text" placeholder="Username" name="name">
@@ -130,72 +128,62 @@ if(isset($_SESSION["username"]))
           </div>
       </div>
       <?php
-        if(isset($_GET['message']))
-      {
-      $message=$_GET['message'];
-        if($message=="rpass")
-        {
-            echo '<div class="alert alert-danger alert-dismissible" role="alert">';
-            echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-            echo '<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+if (isset($_GET['message'])) {
+        $message = $_GET['message'];
+        if ($message == "rpass") {
+                echo '<div class="alert alert-danger alert-dismissible" role="alert">';
+                echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                echo '<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
   <span class="sr-only">Error:</span>
   The passwords did not match!</strong>';
-            echo '</div>';
-        }
-        else if($message=="logout")
-        {
-          echo '<div class="alert alert-success alert-dismissible" role="alert">';
-            echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-            echo '<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                echo '</div>';
+        } else if ($message == "logout") {
+                echo '<div class="alert alert-success alert-dismissible" role="alert">';
+                echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                echo '<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
   <span class="sr-only">Success:</span>
   Successfully Logged Out!</strong>';
-            echo '</div>';
-        }
-        else if($message=="loginfailed")
-        {
-           echo '<div class="alert alert-danger alert-dismissible" role="alert">';
-            echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-            echo '<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                echo '</div>';
+        } else if ($message == "loginfailed") {
+                echo '<div class="alert alert-danger alert-dismissible" role="alert">';
+                echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                echo '<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
   <span class="sr-only">Error:</span>
   Sorry the username and password did not match! <a data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();">Try Again?</a>';
-            echo '</div>';
-        }
-        else if($message=="signedup")
-        {
-           echo '<div class="alert alert-success alert-dismissible" role="alert">';
-            echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-            echo '<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                echo '</div>';
+        } else if ($message == "signedup") {
+                echo '<div class="alert alert-success alert-dismissible" role="alert">';
+                echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                echo '<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
   <span class="sr-only">Success:</span>
   Successfully Signed Up!</strong>';
-            echo '</div>';
+                echo '</div>';
         }
-    }
-    ?>
+}
+?>
       <div class="container">
-        <?php require('includes/config.php'); ?>
         <?php
-    try {
-      
-        $pages = new Paginator('6','p');
-        $stmt = $db->query('SELECT postID FROM list');
+require('includes/config.php');
+?>
+        <?php
+try {
+        $pages = new Paginator('6', 'p');
+        $stmt  = $db->query('SELECT postID FROM list');
         $pages->set_total($stmt->rowCount());
-        $stmt = $db->query('SELECT postID, type, title, postdesc, date, authorid FROM list ORDER BY date DESC '.$pages->get_limit());
-        while($row = $stmt->fetch()){
-            
-            echo '<div>';
-                echo '<h1><a href="viewpost.php?id='.$row['postID'].'">'."[".$row['type']."] ".$row['title'].'</a></h1>';
-                echo '<p>Posted on '.date('jS M Y H:i', strtotime($row['date'])).' by <b>'.$row['authorid'].'</b></p>';
-                echo '<p>'.$row['postdesc'].'</p>';                
-                echo '<p><a href="viewpost.php?id='.$row['postID'].'">Read More</a></p>';                
-            echo '</div>';
-
+        $stmt = $db->query('SELECT postID, type, title, postdesc, date, authorid FROM list ORDER BY date DESC ' . $pages->get_limit());
+        while ($row = $stmt->fetch()) {
+                echo '<div class="well">';
+                echo '<h1><a href="viewpost.php?id=' . $row['postID'] . '">' . "[" . $row['type'] . "] " . $row['title'] . '</a></h1>';
+                echo '<p>Posted on ' . date('jS M Y H:i', strtotime($row['date'])) . ' by <b>' . $row['authorid'] . '</b></p>';
+                echo '<p>' . $row['postdesc'] . '</p>';
+                echo '<p><a href="viewpost.php?id=' . $row['postID'] . '">Read More</a></p>';
+                echo '</div>';
         }
-      
-      echo '<nav>'.$pages->page_links().'</nav>';
-
-    } catch(PDOException $e) {
+        echo '<nav>' . $pages->page_links() . '</nav>';
+}
+catch (PDOException $e) {
         echo $e->getMessage();
-    }
+}
 ?>
     </div>
 

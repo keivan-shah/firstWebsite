@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <?php
-  session_start();
-  if(!isset($_SESSION["username"]))
-  {
-    header('Location: ../index.php');
-  }
+session_start();
+if (!isset($_SESSION["username"])) {
+        header('Location: ../index.php');
+}
 ?>
-<?php require('../includes/config.php'); ?>
+<?php
+require('../includes/config.php');
+?>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -48,7 +49,7 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home</a></li>
         <li><a href="post.php">Post</a></li>
-        <li><a href="about.html">About Us</a></li>
+        <li><a href="../about.html">About Us</a></li>
          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More<span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -77,66 +78,58 @@
           </form>
         </li>
  -->         <?php
-            echo '<li class="dropdown">';
-            echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>'.$_SESSION["username"].'<span class="caret"></span></b></a>';
-            echo '<ul class="dropdown-menu">';
-            echo '<li><a href="#profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+echo '<li class="dropdown">';
+echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>' . $_SESSION["username"] . '<span class="caret"></span></b></a>';
+echo '<ul class="dropdown-menu">';
+echo '<li><a href="#profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                   <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="post.php"><span class="glyphicon glyphicon-pencil"></span> Write a post</a></li>';
-            echo '</ul></li>';
-          ?>
+echo '</ul></li>';
+?>
       </ul>
       
     </div>
   </div>
 </nav>
       <?php
-        if(isset($_GET['message']))
-      {
-      $message=$_GET['message'];
-      if($message=="logged")
-        {
-            echo '<div class="alert alert-success alert-dismissible" role="alert">';
-            echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-            echo '<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+if (isset($_GET['message'])) {
+        $message = $_GET['message'];
+        if ($message == "logged") {
+                echo '<div class="alert alert-success alert-dismissible" role="alert">';
+                echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                echo '<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
   <span class="sr-only">Success:</span>
   Successfully Logged In!</strong>';
-            echo '</div>';
-        }
-        else if($message=="post")
-        {
-            echo '<div class="alert alert-success alert-dismissible" role="alert">';
-            echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-            echo '<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                echo '</div>';
+        } else if ($message == "post") {
+                echo '<div class="alert alert-success alert-dismissible" role="alert">';
+                echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                echo '<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
   <span class="sr-only">Success:</span>
   Successfully Posted!</strong>';
-            echo '</div>';
+                echo '</div>';
         }
-      }
-       echo '<div class="container">';
-    try {
-      
-        $pages = new Paginator('6','p');
-        $stmt = $db->query('SELECT postID FROM list');
+}
+echo '<div class="container">';
+try {
+        $pages = new Paginator('6', 'p');
+        $stmt  = $db->query('SELECT postID FROM list');
         $pages->set_total($stmt->rowCount());
-        $stmt = $db->query('SELECT postID, type, title, postdesc, date, authorid FROM list ORDER BY date DESC '.$pages->get_limit());
-        while($row = $stmt->fetch()){
-            
-            echo '<div>';
-                echo '<h1><a href="viewpost.php?id='.$row['postID'].'">'."[".$row['type']."] ".$row['title'].'</a></h1>';
-                echo '<p>Posted on '.date('jS M Y H:i', strtotime($row['date'])).' by <b>'.$row['authorid'].'</b></p>';
-                echo '<p>'.$row['postdesc'].'</p>';                
-                echo '<p><a href="viewpost.php?id='.$row['postID'].'">Read More</a></p>';                
-            echo '</div>';
-
+        $stmt = $db->query('SELECT postID, type, title, postdesc, date, authorid FROM list ORDER BY date DESC ' . $pages->get_limit());
+        while ($row = $stmt->fetch()) {
+                echo '<div>';
+                echo '<h1><a href="viewpost.php?id=' . $row['postID'] . '">' . "[" . $row['type'] . "] " . $row['title'] . '</a></h1>';
+                echo '<p>Posted on ' . date('jS M Y H:i', strtotime($row['date'])) . ' by <b>' . $row['authorid'] . '</b></p>';
+                echo '<p>' . $row['postdesc'] . '</p>';
+                echo '<p><a href="viewpost.php?id=' . $row['postID'] . '">Read More</a></p>';
+                echo '</div>';
         }
-      
-      echo '<nav>'.$pages->page_links().'</nav>';
-
-    } catch(PDOException $e) {
+        echo '<nav>' . $pages->page_links() . '</nav>';
+}
+catch (PDOException $e) {
         echo $e->getMessage();
-    }
+}
 ?>
     </div>
 

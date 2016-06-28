@@ -14,7 +14,7 @@ if(!$db)
   {
   mysqli_select_db($conn,'data');
   $sql = "CREATE TABLE list (
-  postID INT(6) UNSIGNED PRIMARY KEY,
+  postID INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(255) NOT NULL, 
   type VARCHAR(255) NOT NULL,
   content TEXT,
@@ -34,7 +34,7 @@ if(!$db)
 	user VARCHAR(100) NOT NULL UNIQUE,
 	pass VARCHAR(50) NOT NULL,
 	email VARCHAR(150) UNIQUE,
-  num INT(10) UNSIGNED UNIQUE,
+  num BIGINT(15) UNSIGNED UNIQUE NOT NULL,
 	reg_date TIMESTAMP
 	)";
 	$qury=mysqli_query($conn,$sql);
@@ -42,6 +42,29 @@ if(!$db)
 	{
 		die('Could not Create Table:'. mysqli_error($conn));		
 	}
+   $sql = "CREATE TABLE likes (
+  id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+  username VARCHAR(100) NOT NULL,
+  postid INT(6) NOT NULL,
+  like_date TIMESTAMP
+  )";
+  $qury=mysqli_query($conn,$sql);
+  if(!$qury)
+  {
+    die('Could not Create Table:'. mysqli_error($conn));    
+  }
+  $sql = "CREATE TABLE comments (
+  id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+  username VARCHAR(100) NOT NULL,
+  postid INT(6) NOT NULL,
+  content TEXT,
+  comment_date TIMESTAMP
+  )";
+  $qury=mysqli_query($conn,$sql);
+  if(!$qury)
+  {
+    die('Could not Create Table:'. mysqli_error($conn));    
+  }
 }
 echo 'Database Created Successfully!!';
 ?>

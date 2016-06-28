@@ -1,26 +1,35 @@
 <?php
-  session_start();
-  if(!isset($_SESSION["username"]))
+session_start();
+ if(!isset($_SESSION["username"]))
   {
     header('Location: ../index.php');
   }
 ?>
-
-<html>
-         <head>
-          <link rel="stylesheet" href="../css/bootstrap.min.css">
-           <link rel="stylesheet" href="../css/post.css">
-
-  <script src="../js/jquery.min.js"></script>
-  <script src="../js/bootstrap.min.js"></script>
- <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Tangerine">
-          <style>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Home</title>
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/login-register.css" rel="stylesheet">
+    <script src="../js/login-register.js" type="text/javascript"></script>
+        <style>
     .logo {font-size: 30px;}
     body{font-family: sans-serif;}
     nav li{padding-right: 10px;}
     </style>
-          </head>
-<body>
+    
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
 <nav class="navbar navbar-default">
   <div class="container">
     <div class="navbar-header">
@@ -35,8 +44,8 @@
 
     <div class="collapse navbar-collapse" id="example">
       <ul class="nav navbar-nav">
-        <li><a href="index.php">Home</a></li>
-        <li class="active"><a href="post.php">Post</a></li>
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="post.php">Post</a></li>
         <li><a href="about.html">About Us</a></li>
          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More<span class="caret"></span></a>
@@ -60,80 +69,98 @@
         <button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-search"></span></button>
       </form>
         </li>
-<!--        <li>
-          <form action="logout.php" class="navbar-right">
-          <input class="btn btn-primary navbar-btn" type="submit" value="Log Out">
-          </form>
-        </li>
- -->         <?php
+          <?php
             echo '<li class="dropdown">';
             echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>'.$_SESSION["username"].'<span class="caret"></span></b></a>';
             echo '<ul class="dropdown-menu">';
             echo '<li><a href="#profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                   <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                   <li role="separator" class="divider"></li>
-                  <li class="active"><a href="post.php"><span class="glyphicon glyphicon-pencil"></span> Write a post</a></li>';
+                  <li><a href="post.php"><span class="glyphicon glyphicon-pencil"></span> Write a post</a></li>';
             echo '</ul></li>';
           ?>
       </ul>
-      
     </div>
   </div>
 </nav>
+</body>
+</html>
 
 
         <div class="container">
   <div class="row">
     <div class="col-md-8">
       <section>      
-        <h1 class="title"><span>Post</span> </h1>
+        <h1 class="title"><span>Profile</span> </h1>
         <hr>
             <form class="form-horizontal" method="post" name="post" action="postenter.php" id="post" enctype="multipart/form-data" >        
         <div class="form-group">
 
-          <label class="control-label col-sm-3">Title<span class="text-danger">*</span></label>
-          <div class="col-md-7 col-sm-9">
+                   <div class="col-md-7 col-sm-9">
               <div class="input-group">
-              <input type="title" class="form-control" name="title" id="title
-              " placeholder="Title" >
+              
+         <?php
+          $conn=mysqli_connect("localhost","test","12345");
+            if(!$conn)
+            {
+              die('Could not Connect:'. mysqli_error($conn));
+            }
+          $db=mysqli_select_db($conn,"data");
+          $sql="SELECT id, user, pass, email, num FROM phplogin WHERE user='".$_SESSION["username"]."'";
+          $qury=mysqli_query($conn,$sql);
+          $result=mysqli_fetch_assoc($qury);
+?>
+              
+
             </div>
            </div>
         </div>
         
       
       <div class="form-group">
-          <label class="control-label col-sm-3">Type<span class="text-danger">*</span></label>
+      
           <div class="col-xs-8">
             <div class="form-inline">
               <div class="form-group">
-              <div class="form-group">
-                <select name="type" id="type" class="form-control">
-                  <option value="Others">Type</option>
-                  <option value="Buy">Buy</option><option value="Sell">Sell</option><option value="Notification">Notification</option><option value="Others">Others</option>                </select>
-              </div>
               </div>
             </div>
           </div>
-        </div>  <div class="form-group">
-          <label class="control-label col-sm-3">Description<span class="text-danger">*</span></label>
+        </div> 
+         <div class="form-group">
+          <label class="control-label col-sm-3">username<span class="text-danger">*</span></label>
           <div class="col-md-6 col-sm-9">
-            <input type="text" class="form-control" name="postdesc" id="postdesc" placeholder="Enter post description" >
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-3">Post <span class="text-danger">*</span></label>
-          <div class="col-md-6 col-sm-9">
-           <textarea placeholder="Post Here!" name="content" id="content"></textarea>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-3">File Upload <br>
-          <small>(optional)</small></label>
-          <div class="col-md-5 col-sm-8">
-            <div class="input-group"> <span class="input-group-addon" id="file_upload"><i class="glyphicon glyphicon-upload"></i></span>
-              <input type="file" name="file_nm" id="file_nm" class="form-control upload" placeholder="" aria-describedby="file_upload">
+            <?php echo $result["user"];?>
+                      
+            <button><span class="glyphicon glyphicon-pencil"></span></button>
+          
             </div>
-          </div>
+        </div>
+         <div class="form-group">
+          
+          <label class="control-label col-sm-3">password<span class="text-danger">*</span></label>
+          <div class="col-md-6 col-sm-9">
+          <?php echo $result["pass"];?>  
+          <button><span class="glyphicon glyphicon-pencil"></span></button>
+           </div>
+        </div>
+          
+          <div class="form-group">
+          
+          <label class="control-label col-sm-3">email id<span class="text-danger">*</span></label>
+          <div class="col-md-6 col-sm-9">
+          <?php echo $result["email"];?>  
+          <button><span class="glyphicon glyphicon-pencil"></span></button>
+          
+            </div>
+        </div>
+          <div class="form-group">
+          
+          <label class="control-label col-sm-3">phone number<span class="text-danger">*</span></label>
+          <div class="col-md-6 col-sm-9">
+          <?php echo $result["num"];?>  
+    <button><span class="glyphicon glyphicon-pencil"></span></button>           </div>
+        </div>
+        
         <div class="form-group">
           <div class="col-xs-offset-3 col-xs-10">
             <input name="Submit" type="submit" value="post" class="btn btn-primary">
