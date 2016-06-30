@@ -12,6 +12,7 @@ if(!$conn)
 $db=mysqli_select_db($conn,'data');
   $authorid=$_SESSION["username"];
   $content=$_POST['content'];
+  $content=filter_var($content, FILTER_SANITIZE_STRING);
   $postid=$_POST['postid'];
   $d=date("Y-m-d H:i:s");
   $sql="INSERT INTO comments (`postid`, `username`, `content`, `comment_date`) VALUES ('$postid','$authorid', '$content','$d')";
@@ -19,7 +20,7 @@ $db=mysqli_select_db($conn,'data');
 if(!$qury)
   echo "Failed!!!!!!!!!!!!" .mysqli_error($conn);
 else
-  $url="viewpost.php?id=".$postid;
+  $url="viewpost.php?id=".$postid."&message=posted";
   mysqli_close($conn);
   header('Location: ' .$url);
 ?>

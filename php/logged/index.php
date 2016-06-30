@@ -22,6 +22,11 @@ if($qury!=NULL && mysqli_num_rows($qury)>0)
     $alerts+=$row['like'];
   }
 }
+$sort="date";
+        if(isset($_POST['sortby']))
+        {
+          $sort=$_POST['sortby'];
+        }
 ?>
 <?php
 require('../includes/config.php');
@@ -80,6 +85,19 @@ require('../includes/config.php');
             <li><a href="#">Suggestions</a></li>
           </ul>
         </li>
+        <li>
+          <div class="navbar-form">
+          <form action="index.php" method="post" class="form-inline">
+          <select name="sortby" id="sortby" class="form-control" value="blah">
+                  <option value="<?php echo $sort?>">Sort By</option>
+                  <option value="date">Latest</option>
+                  <option value="type">Type</option>
+                  <option value="likes">Likes</option>
+                  <option value="comments">Most Answered</option>
+          <input type="submit" class="btn btn-primary" value="Sort">
+        </form>
+        </div>
+        </li>
       </ul>
         <ul class="nav navbar-nav navbar-right">
         <li>
@@ -90,6 +108,7 @@ require('../includes/config.php');
         <button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-search"></span></button>
       </form>
         </li>
+
 <!--        <li>
           <form action="logout.php" class="navbar-right">
           <input class="btn btn-primary navbar-btn" type="submit" value="Log Out">
@@ -99,13 +118,15 @@ require('../includes/config.php');
 echo '<li class="dropdown">';
 echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>' . $_SESSION["username"] . '<span class="caret"></span></b></a>';
 echo '<ul class="dropdown-menu">';
-echo '<li><a href="#profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+echo '<li><a href="profile.php"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
       <li role="separator" class="divider"></li>';
 echo '<li><a href="#notification"><span class="glyphicon glyphicon-bell"></span>   Alerts   <span class="badge">'.$alerts.'</span></a></li>
       <li role="separator" class="divider"></li>';
- echo'            <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+ echo'            <li><a href="myposts.php"><span class="glyphicon glyphicon-pencil"></span> My posts</a></li>
                   <li role="separator" class="divider"></li>
-                  <li><a href="post.php"><span class="glyphicon glyphicon-pencil"></span> Write a post</a></li>';
+                  <li><a href="post.php"><span class="glyphicon glyphicon-pencil"></span> Write a post</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>';
 echo '</ul></li>';
 ?>
       </ul>
@@ -137,9 +158,9 @@ try {
         $pages = new Paginator('6', 'p');
         $stmt  = $db->query('SELECT postID FROM list');
         $pages->set_total($stmt->rowCount());
-        $stmt = $db->query('SELECT postID, type, title, postdesc, date, authorid FROM list ORDER BY date DESC ' . $pages->get_limit());
+        $stmt = $db->query('SELECT postID, type, title, postdesc, date, authorid FROM list ORDER BY '.$sort.' DESC ' . $pages->get_limit());
         while ($row = $stmt->fetch()) {
-                echo '<div>';
+                echo '<div class="well">';
                 echo '<h1><a href="viewpost.php?id=' . $row['postID'] . '">' . "[" . $row['type'] . "] " . $row['title'] . '</a></h1>';
                 echo '<p>Posted on ' . date('jS M Y H:i', strtotime($row['date'])) . ' by <b>' . $row['authorid'] . '</b></p>';
                 echo '<p>' . $row['postdesc'] . '</p>';

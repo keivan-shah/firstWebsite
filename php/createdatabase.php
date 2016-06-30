@@ -19,6 +19,9 @@ if(!$db)
   type VARCHAR(255) NOT NULL,
   content TEXT,
   postdesc TEXT,
+  likes INT(6),
+  dislikes INT(6),
+  comments INT(6),
   authorid VARCHAR(100) NOT NULL, 
   date TIMESTAMP
   )";
@@ -35,7 +38,8 @@ if(!$db)
 	pass VARCHAR(50) NOT NULL,
 	email VARCHAR(150) UNIQUE,
   num BIGINT(15) UNSIGNED UNIQUE NOT NULL,
-	reg_date TIMESTAMP
+	reg_date TIMESTAMP,
+  profilepic VARCHAR(100)
 	)";
 	$qury=mysqli_query($conn,$sql);
 	if(!$qury)
@@ -43,6 +47,17 @@ if(!$db)
 		die('Could not Create Table:'. mysqli_error($conn));		
 	}
    $sql = "CREATE TABLE likes (
+  id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+  username VARCHAR(100) NOT NULL,
+  postid INT(6) NOT NULL,
+  like_date TIMESTAMP
+  )";
+  $qury=mysqli_query($conn,$sql);
+  if(!$qury)
+  {
+    die('Could not Create Table:'. mysqli_error($conn));    
+  }
+  $sql = "CREATE TABLE dislikes (
   id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
   username VARCHAR(100) NOT NULL,
   postid INT(6) NOT NULL,

@@ -1,0 +1,117 @@
+        @import url(http://weloveiconfonts.com/api/?family=entypo);
+ [class*="entypo-"]:before {
+            font-family: 'entypo', sans-serif;
+        }
+        
+body {
+  font-family: 'Tangerine',sans-serif;
+  color:#333;
+  line-height: 25px;  
+
+}
+
+.form-group label{
+  font-size: 20px;
+  margin:0px;
+
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Tangerine', sans-serif;
+  font-weight: 300;
+  font-size: 40;
+  color:#111;
+  margin-top:8px;
+  margin-bottom:8px;
+}
+h1, h2, h3 {
+  text-transform:uppercase;
+}
+
+input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    cursor: inherit;
+    opacity: 1;
+    filter: alpha(opacity=1);    
+}
+ textarea
+{
+  height: 400px;
+  width: 500px;
+  border: 3px solid #cccccc;
+  padding: 5px;
+  font-family: Tahoma, sans-serif;
+  background-image: url(bg.gif);
+  background-position: bottom right;
+  background-repeat: no-repeat;
+}
+.form-inline .form-group{
+    margin-left: 0;
+    margin-right: 0;
+}
+.control-label {
+    color:#333333;
+}
+.profile p {
+                color: #FFF;
+                text-align: center;
+                padding: 0.125em;
+                margin: 0.5em 0 0;
+    
+            }
+
+/*            .profile .job {
+                width: 200px;
+                background-color: rgba(0,0,0,0.6);
+                font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+                font-weight: 300;
+                font-size: 0.85em;
+                padding: 0.2725em;
+                margin: 0.5em auto 1em;
+                text-shadow: 0px 0px 5px #000000;
+                filter: dropshadow(color=#000000, offx=0, offy=2);
+            }*/
+
+        .social {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+            .social > li {
+                margin: 0 -0.5em 0 0;
+                display: inline-block;
+                width: 4.145em;
+                padding: 0.5em 0;
+                color: #FFF;
+                font-size: 1.25em;
+                background-color: #e04646;
+                border-top: solid 3px #bc2525;
+                border-bottom: solid 3px #bc2525;
+                text-align: center;
+                cursor: pointer;
+            }
+
+                .social > li:hover {
+                    background-color: #bc2525;
+                    -webkit-transition: background-color 0.125s ease-in;
+                }
+
+        .profile-photo {
+            margin-left:100px;
+            display: block;
+            width: 10em;
+            height: 10em;
+            border: solid 3px white;
+            -webkit-border-radius: 4em;
+            -moz-border-radius: 4em;
+            border-radius: 20em;
+            box-shadow: -1px 2px 6px 1px #141211;
+       
+        }
+

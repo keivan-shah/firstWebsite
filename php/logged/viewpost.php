@@ -56,8 +56,15 @@ echo $row['title'];
         <h1>V.J.T.I</h1>
         <hr />
         <p><a href="./">Main Page</a></p>
-
-
+<?php if (isset($_GET['message']) && $_GET['message'] == "posted") {
+                echo '<div class="alert alert-success alert-dismissible" role="alert">';
+                echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                echo '<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+  <span class="sr-only">Success:</span>
+  Comment Posted!</strong>';
+                echo '</div>';
+        }
+?>
 <?php
 $bool  = "true";
 $state = "";
@@ -99,9 +106,10 @@ $sql  = "SELECT username, content, comment_date FROM comments WHERE postid=" . $
 $qury = mysqli_query($conn, $sql);
 if ($qury != NULL && mysqli_num_rows($qury) > 0) {
     while ($result = mysqli_fetch_assoc($qury)) {
+        $content=filter_var($result['content'], FILTER_SANITIZE_STRING);
         echo '<div class="well">
                     <h4>Posted by <b>' . $result['username'] . '</b> on ' . date('jS M Y H:i', strtotime($result['comment_date'])) . '</h4>
-                    <p>' . $result['content'] . '</p>
+                    <block>' .$content. '</block>
                     </div>';
     }
 }

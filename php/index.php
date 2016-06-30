@@ -3,6 +3,11 @@ session_start();
 if (isset($_SESSION["username"])) {
         header('Location: logged/index.php');
 }
+$sort="date";
+        if(isset($_POST['sortby']))
+        {
+          $sort=$_POST['sortby'];
+        }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,6 +71,19 @@ if (isset($_SESSION["username"])) {
         <li>
            <button  class="btn btn-success navbar-btn" data-toggle="modal" href="javascript:void(0)" onclick="openRegisterModal();">Register</button>
         </li>
+        <li>
+          <div class="navbar-form">
+          <form action="index.php" method="post" class="form-inline">
+          <select name="sortby" id="sortby" class="form-control" value="blah">
+                  <option value="<?php echo $sort?>">Sort By</option>
+                  <option value="date">Latest</option>
+                  <option value="type">Type</option>
+                  <option value="likes">Likes</option>
+                  <option value="comments">Most Answered</option>
+          <input type="submit" class="btn btn-primary" value="Sort">
+        </form>
+        </div>
+        </li>
       </ul>
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
@@ -103,7 +121,7 @@ if (isset($_SESSION["username"])) {
                                 <input id="n" class="form-control" type="text" placeholder="Username" name="n">
                                 <input type="text" class="form-control" id="id" placeholder="Registration ID" name="id">
                                 <input type="text" class="form-control" id="emailid" placeholder="E-Mail ID" name="emailid">
-                                <input id="no" class="form-control" type="text" placeholder="Mobile Number" name="no">
+                                <input id="num" class="form-control" type="text" placeholder="Mobile Number" name="num">
                                 <input id="p" class="form-control" type="password" placeholder="Password" name="p">
                                 <input id="rp" class="form-control" type="password" placeholder="Repeat Password" name="rp">
                                 <input class="btn btn-default btn-register" type="submit" value="Create account" >
@@ -158,6 +176,27 @@ if (isset($_GET['message'])) {
   <span class="sr-only">Success:</span>
   Successfully Signed Up!</strong>';
                 echo '</div>';
+        }  else if ($message == "email") {
+                echo '<div class="alert alert-danger alert-dismissible" role="alert">';
+                echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                echo '<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  Please enter Valid Email-id! <a data-toggle="modal" href="javascript:void(0)" onclick="openRegisterModal();">Try Again?</a>';
+                echo '</div>';
+        } else if ($message == "userexists") {
+                echo '<div class="alert alert-danger alert-dismissible" role="alert">';
+                echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                echo '<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  Username Already Exists! Please try another username. <a data-toggle="modal" href="javascript:void(0)" onclick="openRegisterModal();">Try Again?</a>';
+                echo '</div>';
+        } else if ($message == "num") {
+                echo '<div class="alert alert-danger alert-dismissible" role="alert">';
+                echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                echo '<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  Please enter a valid Number! <a data-toggle="modal" href="javascript:void(0)" onclick="openRegisterModal();">Try Again?</a>';
+                echo '</div>';
         }
 }
 ?>
@@ -170,7 +209,7 @@ try {
         $pages = new Paginator('6', 'p');
         $stmt  = $db->query('SELECT postID FROM list');
         $pages->set_total($stmt->rowCount());
-        $stmt = $db->query('SELECT postID, type, title, postdesc, date, authorid FROM list ORDER BY date DESC ' . $pages->get_limit());
+        $stmt = $db->query('SELECT postID, type, title, postdesc, date, authorid FROM list ORDER BY '.$sort.' DESC ' . $pages->get_limit());
         while ($row = $stmt->fetch()) {
                 echo '<div class="well">';
                 echo '<h1><a href="viewpost.php?id=' . $row['postID'] . '">' . "[" . $row['type'] . "] " . $row['title'] . '</a></h1>';
