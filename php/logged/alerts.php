@@ -16,20 +16,15 @@ if($qury!=NULL && mysqli_num_rows($qury)>0)
 {
   while($result = mysqli_fetch_assoc($qury))
   {
-    $stmt="SELECT count(*) AS 'like' FROM likes WHERE postid=".$result['postID']." and viewed='0'";
+    $stmt="SELECT count(*) AS 'like' FROM likes WHERE postid=".$result['postID']."and viewed='0'";
     $query= mysqli_query($conn, $stmt);
+    if($query!=NULL)
+    {
     $row=mysqli_fetch_assoc($query);
     $alerts+=$row['like'];
+	}
   }
 }
-$sort="date";
-        if(isset($_POST['sortby']))
-        {
-          $sort=$_POST['sortby'];
-        }
-?>
-<?php
-require('../includes/config.php');
 ?>
 <html lang="en">
   <head>
@@ -85,23 +80,10 @@ require('../includes/config.php');
             <li><a href="#">Suggestions</a></li>
           </ul>
         </li>
-        <li>
-          <div class="navbar-form">
-          <form action="myposts.php" method="post" class="form-inline">
-          <select name="sortby" id="sortby" class="form-control" value="blah">
-                  <option value="<?php echo $sort?>">Sort By</option>
-                  <option value="date">Latest</option>
-                  <option value="type">Type</option>
-                  <option value="likes">Likes</option>
-                  <option value="comments">Most Answered</option>
-          <input type="submit" class="btn btn-primary" value="Sort">
-        </form>
-        </div>
-        </li>
       </ul>
         <ul class="nav navbar-nav navbar-right">
         <li>
-          <form class="navbar-form navbar-right" role="search">
+          <form class="navbar-form navbar-right" action-"search.php" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search">
         </div>
@@ -120,9 +102,9 @@ echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" a
 echo '<ul class="dropdown-menu">';
 echo '<li><a href="profile.php"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
       <li role="separator" class="divider"></li>';
-echo '<li><a href="alerts.php"><span class="glyphicon glyphicon-bell"></span>   Alerts   <span class="badge">'.$alerts.'</span></a></li>
+echo '<li class="active"><a href="#notification"><span class="glyphicon glyphicon-bell"></span>   Alerts   <span class="badge">'.$alerts.'</span></a></li>
       <li role="separator" class="divider"></li>';
- echo'            <li class="active"><a href="myposts.php"><span class="glyphicon glyphicon-pencil"></span> My posts</a></li>
+ echo'            <li><a href="myposts.php"><span class="glyphicon glyphicon-pencil"></span> My posts</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="post.php"><span class="glyphicon glyphicon-pencil"></span> Write a post</a></li>
                   <li role="separator" class="divider"></li>
@@ -134,28 +116,56 @@ echo '</ul></li>';
     </div>
   </div>
 </nav>
-<?php
-echo '<div class="container">';
-try {
-        $pages = new Paginator('6', 'p');
-        $stmt  = $db->query('SELECT postID FROM list');
-        $pages->set_total($stmt->rowCount());
-        $stmt = $db->query('SELECT postID, type, title, postdesc, date, authorid FROM list WHERE authorid="'.$_SESSION['username'].'" ORDER BY '.$sort.' DESC ' . $pages->get_limit());
-        while ($row = $stmt->fetch()) {
-                echo '<div class="well">';
-                echo '<h1><a href="viewpost.php?id=' . $row['postID'] . '">' . "[" . $row['type'] . "] " . $row['title'] . '</a></h1>';
-                echo '<p>Posted on ' . date('jS M Y H:i', strtotime($row['date'])) . ' by <b>' . $row['authorid'] . '</b></p>';
-                echo '<p>' . $row['postdesc'] . '</p>';
-                echo '<p><a href="viewpost.php?id=' . $row['postID'] . '">Read More</a></p>';
-                echo '</div>';
-        }
-        echo '<nav>' . $pages->page_links() . '</nav>';
-}
-catch (PDOException $e) {
-        echo $e->getMessage();
-}
-?>
-    </div>
+<div class="container">
+	<?php 
+	$sql    = "SELECT postID FROM list WHERE authorid='" . $_SESSION['username']."'";
+	$qury   = mysqli_query($conn, $sql);
+	if($qury!=NULL && mysqli_num_rows($qury)>0)
+	{
+		echo '<h3>Unread Notifications:</h3> 
+		<div class="pull-right">
+					<form action="readpost.php" method="post" class="">
+					<input type="hidden" id="postid" name="postid" value="'.$result['postID'].'">
+					<input type="submit" class="btn btn-primary" value="Mark all as read">
+					</form>
+				</div><hr/>';
+	  while($result = mysqli_fetch_assoc($qury))
+	  {
+	    $stmt="SELECT username, viewed, like_date, postid FROM likes WHERE postid='".$result['postID']."' and viewed='0'";
+	    $query= mysqli_query($conn, $stmt);
+	    if($query!=NULL)
+	    {
+	    $row=mysqli_fetch_assoc($query);
+	    if($row!=NULL)
+	    echo '<div class="well">
+				<p><b>'.$row['username'].'</b> liked your <a href="viewpost.php?id='.$row['postid'].'">post</a> on '.date('jS M Y H:i', strtotime($row['like_date'])).'</p></div>
+				';
+	    }else echo"ERROR!!!!!!!!!!!!";
+	  }
+	}
+	else
+	echo "<h2>Sorry no Alerts!</h2>";
+$sql    = "SELECT postID FROM list WHERE authorid='" . $_SESSION['username']."'";
+	$qury   = mysqli_query($conn, $sql);
+	if($qury!=NULL && mysqli_num_rows($qury)>0)
+	{
+		echo '<h3>All Notifications:</h3> <hr/>';
+	  while($result = mysqli_fetch_assoc($qury))
+	  {
+	    $stmt="SELECT username, viewed, like_date, postid FROM likes WHERE postid='".$result['postID']."' ORDER BY like_date DESC";
+	    $query= mysqli_query($conn, $stmt);
+	    if($query!=NULL)
+	    {
+	    $row=mysqli_fetch_assoc($query);
+	    if($row!=NULL)
+	    echo '<div class="well">
+				<p><b>'.$row['username'].'</b> liked your <a href="viewpost.php?id='.$row['postid'].'">post</a> on '.date('jS M Y H:i', strtotime($row['like_date'])).'</p></div>
+				';
+	    }else echo"ERROR!!!!!!!!!!!!";
+	  }
+	}
+	?>
+</div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="../js/jquery.min.js"></script>

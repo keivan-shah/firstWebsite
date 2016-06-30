@@ -20,7 +20,10 @@ if (!$conn) {
     die('Could not Connect:' . mysqli_error($conn));
 }
 $db = mysqli_select_db($conn, 'data');
-if (isset($_GET["like"])) {
+if($row['authorid']!=$_SESSION['username'])
+{
+if (isset($_GET["like"])) 
+{
     $postID   = $_GET['id'];
     $username = $_SESSION['username'];
     if ($_GET["like"] == "true") {
@@ -31,11 +34,16 @@ if (isset($_GET["like"])) {
             $d    = date("Y-m-d H:i:s");
             $sql  = "INSERT INTO likes (`postid`, `username`, `like_date`) VALUES ('$postID', '$username', '$d')";
             $qury = mysqli_query($conn, $sql);
+            $qury= mysqli_query($conn, "UPDATE list SET likes=likes+1 WHERE postID=".$postID);
+            $qury= mysqli_query($conn, "UPDATE list SET dislikes=dislikes-1 WHERE postID=".$postID);
         }
     } else {
         $sql  = "DELETE FROM likes WHERE (postid='" . $postID . "' and username='" . $username . "')";
         $qury = mysqli_query($conn, $sql);
+        $qury= mysqli_query($conn, "UPDATE list SET dislikes=dislikes+1 WHERE postID=".$postID);
+        $qury= mysqli_query($conn, "UPDATE list SET likes=likes-1 WHERE postID=".$postID);
     }
+}
 }
 ?>
 <!DOCTYPE html>
@@ -89,12 +97,15 @@ echo '<p>Posted on ' . date('jS M Y H:i', strtotime($row['date'])) . ' by <b>' .
 echo '<p>' . $row['content'] . '</p>';
 if ($result['like'] > 0)
     echo $result['like'] . ' persons are interseted in this post';
+if($row['authorid']!=$_SESSION['username'])
+{
 echo '<div class="text-right">';
 echo '<form action="viewpost.php" method="get">';
 echo '<input type="hidden" name="id" id="id" value="' . $_GET['id'] . '">';
 echo '<input type="hidden" name="like" id="like" value="' . $bool . '">';
 echo '<input class="btn btn-default' . $state . '" type="submit" value="I' . "'" . 'm Interested!">
         </form></div>';
+    }
 echo '</div>';
 ?>
 <?php

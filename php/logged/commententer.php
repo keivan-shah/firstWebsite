@@ -19,8 +19,12 @@ $db=mysqli_select_db($conn,'data');
   $qury=mysqli_query($conn,$sql);
 if(!$qury)
   echo "Failed!!!!!!!!!!!!" .mysqli_error($conn);
+   $sql="UPDATE list SET comments=comments+1 WHERE postid='".$postid."'";
+   $qury=mysqli_query($conn,$sql);
+if(!$qury)
+  echo "Failed!!!!!!!!!!!!" .mysqli_error($conn);
 else
   $url="viewpost.php?id=".$postid."&message=posted";
   mysqli_close($conn);
-  header('Location: ' .$url);
+  //header('Location: ' .$url);
 ?>

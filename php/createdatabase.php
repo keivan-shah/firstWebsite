@@ -19,9 +19,9 @@ if(!$db)
   type VARCHAR(255) NOT NULL,
   content TEXT,
   postdesc TEXT,
-  likes INT(6),
-  dislikes INT(6),
-  comments INT(6),
+  likes INT(6) DEFAULT '0',
+  dislikes INT(6) DEFAULT '0',
+  comments INT(6) DEFAULT '0',
   authorid VARCHAR(100) NOT NULL, 
   date TIMESTAMP
   )";
@@ -50,6 +50,7 @@ if(!$db)
   id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
   username VARCHAR(100) NOT NULL,
   postid INT(6) NOT NULL,
+  viewed BOOLEAN DEFAULT '0',
   like_date TIMESTAMP
   )";
   $qury=mysqli_query($conn,$sql);

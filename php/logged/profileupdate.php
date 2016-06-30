@@ -61,7 +61,7 @@ if ((isset($_POST['opassword']) && ($_POST['opassword'] == $result['pass'])))
     else header('Location: profile.php?message=rpass');
   }
 }
-else header('Location: profile.php?message=pass');
+else header('Location: profile.php');
 
 ?>
 

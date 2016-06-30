@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 session_start();
 if (!isset($_SESSION["username"])) {
@@ -26,22 +27,41 @@ $sort="date";
         {
           $sort=$_POST['sortby'];
         }
+$search="";
+if(isset($_POST['search']))
+{
+  $search=filter_var($_POST['search'], FILTER_SANITIZE_STRING);
+}
+echo '<h1>ERROR</h1>';
 ?>
-<html>
-         <head>
-          <link rel="stylesheet" href="../css/bootstrap.min.css">
-           <link rel="stylesheet" href="../css/post.css">
-
-  <script src="../js/jquery.min.js"></script>
-  <script src="../js/bootstrap.min.js"></script>
- <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Tangerine">
-          <style>
+<?php
+require('../includes/config.php');
+?>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Home</title>
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/login-register.css" rel="stylesheet">
+    <script src="../js/login-register.js" type="text/javascript"></script>
+        <style>
     .logo {font-size: 30px;}
     body{font-family: sans-serif;}
     nav li{padding-right: 10px;}
     </style>
-          </head>
-<body>
+    
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
 <nav class="navbar navbar-default">
   <div class="container">
     <div class="navbar-header">
@@ -56,8 +76,8 @@ $sort="date";
 
     <div class="collapse navbar-collapse" id="example">
       <ul class="nav navbar-nav">
-        <li><a href="index.php">Home</a></li>
-        <li class="active"><a href="post.php">Post</a></li>
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="post.php">Post</a></li>
         <li><a href="../about.html">About Us</a></li>
          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More<span class="caret"></span></a>
@@ -71,16 +91,30 @@ $sort="date";
             <li><a href="#">Suggestions</a></li>
           </ul>
         </li>
+        <li>
+          <div class="navbar-form">
+          <form action="index.php" method="post" class="form-inline">
+          <select name="sortby" id="sortby" class="form-control" value="blah">
+                  <option value="<?php echo $sort?>">Sort By</option>
+                  <option value="date">Latest</option>
+                  <option value="type">Type</option>
+                  <option value="likes">Likes</option>
+                  <option value="comments">Most Answered</option>
+          <input type="submit" class="btn btn-primary" value="Sort">
+        </form>
+        </div>
+        </li>
       </ul>
         <ul class="nav navbar-nav navbar-right">
         <li>
-          <form class="navbar-form navbar-right" role="search">
+          <form class="navbar-form navbar-right" role="search" action="search.php">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search">
         </div>
         <button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-search"></span></button>
       </form>
         </li>
+
 <!--        <li>
           <form action="logout.php" class="navbar-right">
           <input class="btn btn-primary navbar-btn" type="submit" value="Log Out">
@@ -96,7 +130,7 @@ echo '<li><a href="alerts.php"><span class="glyphicon glyphicon-bell"></span>   
       <li role="separator" class="divider"></li>';
  echo'            <li><a href="myposts.php"><span class="glyphicon glyphicon-pencil"></span> My posts</a></li>
                   <li role="separator" class="divider"></li>
-                  <li class="active"><a href="post.php"><span class="glyphicon glyphicon-pencil"></span> Write a post</a></li>
+                  <li><a href="post.php"><span class="glyphicon glyphicon-pencil"></span> Write a post</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>';
 echo '</ul></li>';
@@ -107,67 +141,33 @@ echo '</ul></li>';
   </div>
 </nav>
 
+<div class="container">
+  <?php
+  try {
+        $pages = new Paginator('6', 'p');
+        $stmt  = $db->query('SELECT postID FROM list');
+        $pages->set_total($stmt->rowCount());
+        $stmt = $db->query('SELECT postID, type, title, postdesc, date, authorid FROM list WHERE type LIKE "%'.$search.'%" or title LIKE "%'.$search.'%" or postdesc LIKE "%'.$search.'%" or authorid LIKE "%'.$search.'%" ORDER BY '.$sort.' DESC ' . $pages->get_limit());
+        while ($row = $stmt->fetch()) {
+                echo '<div class="well">';
+                echo '<h1><a href="viewpost.php?id=' . $row['postID'] . '">' . "[" . $row['type'] . "] " . $row['title'] . '</a></h1>';
+                echo '<p>Posted on ' . date('jS M Y H:i', strtotime($row['date'])) . ' by <b>' . $row['authorid'] . '</b></p>';
+                echo '<p>' . $row['postdesc'] . '</p>';
+                echo '<p><a href="viewpost.php?id=' . $row['postID'] . '">Read More</a></p>';
+                echo '</div>';
+        }
+        echo '<nav>' . $pages->page_links() . '</nav>';
+}
+catch (PDOException $e) {
+        echo $e->getMessage();
+}
+?>
+   </div>
 
-        <div class="container">
-  <div class="row">
-    <div class="col-md-8">
-      <section>      
-        <h1 class="title"><span>Post</span> </h1>
-        <hr>
-            <form class="form-horizontal" method="post" name="post" action="postenter.php" id="post" enctype="multipart/form-data" >        
-        <div class="form-group">
-
-          <label class="control-label col-sm-3">Title<span class="text-danger">*</span></label>
-          <div class="col-md-7 col-sm-9">
-              <div class="input-group">
-              <input type="title" class="form-control" name="title" id="title
-              " placeholder="Title" >
-            </div>
-           </div>
-        </div>
-        
-      
-      <div class="form-group">
-          <label class="control-label col-sm-3">Type<span class="text-danger">*</span></label>
-          <div class="col-xs-8">
-            <div class="form-inline">
-              <div class="form-group">
-              <div class="form-group">
-                <select name="type" id="type" class="form-control">
-                  <option value="Others">Type</option>
-                  <option value="Buy">Buy</option><option value="Sell">Sell</option><option value="Notification">Notification</option><option value="Others">Others</option>                </select>
-              </div>
-              </div>
-            </div>
-          </div>
-        </div>  <div class="form-group">
-          <label class="control-label col-sm-3">Description<span class="text-danger">*</span></label>
-          <div class="col-md-6 col-sm-9">
-            <input type="text" class="form-control" name="postdesc" id="postdesc" placeholder="Enter post description" >
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-3">Post <span class="text-danger">*</span></label>
-          <div class="col-md-6 col-sm-9">
-           <textarea placeholder="Post Here!" name="content" id="content"></textarea>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-3">File Upload <br>
-          <small>(optional)</small></label>
-          <div class="col-md-5 col-sm-8">
-            <div class="input-group"> <span class="input-group-addon" id="file_upload"><i class="glyphicon glyphicon-upload"></i></span>
-              <input type="file" name="file_nm" id="file_nm" class="form-control upload" placeholder="" aria-describedby="file_upload">
-            </div>
-          </div>
-        <div class="form-group">
-          <div class="col-xs-offset-3 col-xs-10">
-            <input name="Submit" type="submit" value="post" class="btn btn-primary">
-          </div>
-        </div>
-      </form>
-    </div>
-</div>
-</div>
-</body>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js"></script>
+   
+  </body>
 </html>

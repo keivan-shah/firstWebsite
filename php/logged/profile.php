@@ -22,7 +22,7 @@ if ($qury != NULL && mysqli_num_rows($qury) > 0)
 {
   while ($result = mysqli_fetch_assoc($qury))
   {
-    $stmt = "SELECT count(*) AS 'like' FROM likes WHERE postid=" . $result['postID'];
+    $stmt = "SELECT count(*) AS 'like' FROM likes WHERE postid=" . $result['postID']." and viewed='0'";
     $query = mysqli_query($conn, $stmt);
     $row = mysqli_fetch_assoc($query);
     $alerts+= $row['like'];
@@ -72,8 +72,8 @@ if ($qury != NULL && mysqli_num_rows($qury) > 0)
     <div class="collapse navbar-collapse" id="example">
       <ul class="nav navbar-nav">
         <li><a href="index.php">Home</a></li>
-        <li class="active"><a href="post.php">Post</a></li>
-        <li><a href="about.html">About Us</a></li>
+        <li><a href="post.php">Post</a></li>
+        <li><a href="../about.html">About Us</a></li>
          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More<span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -105,13 +105,13 @@ if ($qury != NULL && mysqli_num_rows($qury) > 0)
 echo '<li class="dropdown">';
 echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>' . $_SESSION["username"] . '<span class="caret"></span></b></a>';
 echo '<ul class="dropdown-menu">';
-echo '<li><a href="profile.php"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+echo '<li class="active"><a href="profile.php"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
       <li role="separator" class="divider"></li>';
-echo '<li><a href="#notification"><span class="glyphicon glyphicon-bell"></span>   Alerts   <span class="badge">' . $alerts . '</span></a></li>
+echo '<li><a href="alerts.php"><span class="glyphicon glyphicon-bell"></span>   Alerts   <span class="badge">' . $alerts . '</span></a></li>
       <li role="separator" class="divider"></li>';
 echo '            <li><a href="myposts.php"><span class="glyphicon glyphicon-pencil"></span> My posts</a></li>
                   <li role="separator" class="divider"></li>
-                  <li class="active"><a href="post.php"><span class="glyphicon glyphicon-pencil"></span> Write a post</a></li>
+                  <li><a href="post.php"><span class="glyphicon glyphicon-pencil"></span> Write a post</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>';
 echo '</ul></li>';
